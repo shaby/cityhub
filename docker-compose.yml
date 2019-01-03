@@ -1,0 +1,157 @@
+version: '3.3'
+  
+services:
+
+  zk1:
+    build:
+      context: .
+      dockerfile: ./zk/Dockerfile
+    image: pinecni/zookeeper:v1
+    hostname: zk1
+    container_name: zk1
+    environment:
+      - SERVER_ID=1
+      - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
+      - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
+      - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+  zk2:
+    build:
+      context: .
+      dockerfile: ./zk/Dockerfile
+    image: pinecni/zookeeper:v1
+    hostname: zk2
+    container_name: zk2
+    environment:
+      - SERVER_ID=2
+      - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
+      - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
+      - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+  zk3:
+    build:
+      context: .
+      dockerfile: ./zk/Dockerfile
+    image: pinecni/zookeeper:v1
+    hostname: zk3
+    container_name: zk3
+    environment:
+      - SERVER_ID=3
+      - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
+      - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
+      - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+
+  kafka:
+    build:
+      context: .
+      dockerfile: ./kafka/Dockerfile
+    image: pinecni/kafka:v1
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_BROKER_ID=1
+      - ZOOKEEPER_CONNECTION_STRING=zk1:2181,zk2:2181,zk3:2181
+      - WAIT_FOR_HOST=zk1
+      - WAIT_FOR_PORT=2181
+    volumes:
+      - ${CITYHUB}/logs/kafka-logs:/data
+    depends_on:
+      - zk1
+      - zk2
+      - zk3
+
+  nimbus:
+    build:
+      context: .
+      dockerfile: ./storm/Dockerfile
+    image: pinecni/storm:v1
+    container_name: nimbus
+    command: nimbus -c nimbus.host=nimbus 
+    restart: always
+    environment:
+      - STORM_ZOOKEEPER_SERVERS=zk1,zk2,zk3
+      - WAIT_FOR_HOST=zk1
+      - WAIT_FOR_PORT=2181
+    ports:
+      - 6627:6627
+    depends_on:
+      - kafka
+      
+  supervisor:
+    build:
+      context: .
+      dockerfile: ./storm/Dockerfile
+    image: pinecni/storm:v1
+    container_name: supervisor
+    command: supervisor -c nimbus.host=nimbus -c supervisor.slots.ports=[6700,6701,6702,6703]
+    restart: always
+    environment:
+      - affinity:role!=supervisor
+      - STORM_ZOOKEEPER_SERVERS=zk1,zk2,zk3
+      - WAIT_FOR_HOST=nimbus
+      - WAIT_FOR_PORT=6627
+    volumes:
+      - ${CITYHUB}/logs/storm:/opt/storm/logs
+    depends_on:
+      - nimbus
+
+  ui:
+    build:
+      context: .
+      dockerfile: ./storm/Dockerfile
+    image: pinecni/storm:v1
+    command: ui -c nimbus.host=nimbus
+    restart: always
+    container_name: ui
+    environment:
+      - STORM_ZOOKEEPER_SERVERS=zk1,zk2,zk3
+      - WAIT_FOR_HOST=nimbus
+      - WAIT_FOR_PORT=6627
+    ports:
+      - 18080:8080
+    depends_on:
+      - nimbus
+
+  flume:
+    build:
+      context: .
+      dockerfile: ./flume/Dockerfile
+    image: pinecni/flume:v1
+    hostname: flume
+    container_name: flume
+    environment:
+      - AGENT_NAME=agent
+      - AGENT_FILE=/opt/flume/conf/agent.conf
+      - AGENT_CONF=/opt/flume/conf
+      - WAIT_FOR_HOST=nimbus
+      - WAIT_FOR_PORT=6627
+    volumes:
+      - ${CITYHUB}/flume/lib:/opt/flume/plugins.d/agent/lib
+      - ${CITYHUB}/flume/conf/agent.conf:/opt/flume/conf/agent.conf
+      - ${CITYHUB}/logs/flume:/opt/flume/logs
+    depends_on:
+      - nimbus
+
+  topology:
+    build:
+      context: .
+      dockerfile: ./storm/Dockerfile
+    image: pinecni/storm:v1
+    command: -c nimbus.host=nimbus jar /maven/topology-0.1.jar com.pinecni.cityhub.topology.CityHubTopology /maven/topology.conf remote
+    environment:
+      - WAIT_FOR_HOST=nimbus
+      - WAIT_FOR_PORT=6627
+    volumes:
+      - ${CITYHUB}/topo:/maven
+    depends_on:
+      - nimbus
+
+
+
+networks:
+  default:
+    external: 
+      name: cityhub
+

@@ -1,0 +1,32 @@
+version: '3'
+  
+services:
+  cityhub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: pinecni/cityhub:v3
+    hostname: cityhub1
+    container_name: cityhub
+    tty: true
+    environment:
+      - $D_HOME=~/docker/cityhub
+    ports:
+      - 18080:8080
+      - 18000:8000
+    volumes:
+      - $D_HOME/bin:/opt/bin
+      - $D_HOME/flume/conf:/opt/flume/conf
+      - $D_HOME/flume/plugins.d:/opt/flume/plugins.d
+      - $D_HOME/storm/conf:/opt/storm/conf
+      - $D_HOME/storm/extlib:/opt/storm/extlib
+      - $D_HOME/kafka/config:/opt/kafka/config
+      - $D_HOME/zk/conf:/opt/zk/conf
+      - $D_HOME/logs/flume:/opt/flume/logs 
+      - $D_HOME/logs/storm:/opt/storm/logs 
+      - $D_HOME/logs/kafka:/opt/kafka/logs 
+      - $D_HOME/logs/zk:/opt/zk/logs 
+      - $D_HOME/tmp/kafka-logs:/tmp/kafka-logs 
+      - $D_HOME/tmp/zookeeper:/tmp/zookeeper 
+
+  

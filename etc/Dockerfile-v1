@@ -1,0 +1,53 @@
+FROM openjdk:8-alpine
+MAINTAINER Yonghak An <neoshaby@gmail.com>
+
+ENV FLUME_HOME=/opt/flume \
+  ZK_HOME=/opt/zk \
+  KAFKA_HOME=/opt/kafka \
+  STORM_HOME=/opt/storm \
+  PATH=$PATH:$FLUME_HOME/bin:$ZK_HOME/bin:$KAFKA_HOME/bin:$STORM_HOME/bin 
+
+
+# Install required packages
+RUN apk add --no-cache bash vim git-bash-completion su-exec ca-certificates gnupg libressl curl python wget tzdata \
+  && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+  && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
+  && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-bin-2.28-r0.apk \
+  && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-i18n-2.28-r0.apk \
+  && apk add glibc-bin-2.28-r0.apk glibc-i18n-2.28-r0.apk glibc-2.28-r0.apk \
+  && cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime \
+  && echo "Asia/Seoul" > /etc/timezone \
+  && wget -q http://mirror.navercorp.com/apache/flume/1.8.0/apache-flume-1.8.0-bin.tar.gz \
+  && wget -q http://mirror.navercorp.com/apache/zookeeper/zookeeper-3.4.13/zookeeper-3.4.13.tar.gz \
+  && wget -q http://mirror.navercorp.com/apache/kafka/2.1.0/kafka_2.12-2.1.0.tgz \
+  && wget -q http://mirror.navercorp.com/apache/storm/apache-storm-1.0.6/apache-storm-1.0.6.tar.gz \
+  && mkdir -p /opt/flume \
+  && mkdir -p /opt/flume/logs \
+  && mkdir -p /opt/zk \
+  && mkdir -p /opt/kafka \
+  && mkdir -p /opt/storm \
+  && mkdir -p /opt/bin \
+  && tar -zxvf apache-flume-1.8.0-bin.tar.gz -C /opt/flume --strip 1 \
+  && tar -zxvf zookeeper-3.4.13.tar.gz -C /opt/zk --strip 1 \
+  && tar -zxvf kafka_2.12-2.1.0.tgz -C /opt/kafka --strip 1 \
+  && tar -zxvf apache-storm-1.0.6.tar.gz -C /opt/storm --strip 1 \
+  && rm -rf *.gz *.tgz *.apk \
+  && curl -O https://gist.githubusercontent.com/lesstif/cd26f57b7cfd2cd55241b20e05b5cd93/raw/InstallCert.java \
+  && javac InstallCert.java \
+  && echo "1" | java -cp ./ InstallCert data.kma.go.kr \
+  && keytool -exportcert -keystore jssecacerts -storepass changeit -file output.cert -alias data.kma.go.kr-1 \
+  && echo "yes" | keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -storepass changeit -file output.cert -alias data.kma.go.kr-1 \
+  && echo "export LANGUAGE=ko_KR.UTF-8" >> ~/.bashrc  \
+  && echo "export LANG=ko_KR.UTF-8" >> ~/.bashrc  \
+  && echo "export FLUME_HOME=/opt/flume" >> ~/.bashrc  \
+  && echo "export ZK_HOME=/opt/zk" >> ~/.bashrc  \
+  && echo "export KAFKA_HOME=/opt/kafka" >> ~/.bashrc  \
+  && echo "export STORM_HOME=/opt/storm" >> ~/.bashrc  \
+  && echo "export PATH=$PATH:$FLUME_HOME/bin:$ZK_HOME/bin:$KAFKA_HOME/bin:$STORM_HOME/bin" >> ~/.bashrc 
+
+
+EXPOSE 8080 2181 2888 3888 9092
+
+COPY start.sh /
+
+CMD ["/start.sh"]

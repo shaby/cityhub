@@ -1,0 +1,30 @@
+{
+   "id":"8800000000000000000",
+   "type":"BusStop",
+   "shortID": {
+      "type": "string",
+      "value": ""
+   },
+   "name": {
+      "type": "string",
+      "value": ""
+   },
+   "location":{
+      "type":"geo:json",
+      "value":{
+         "type":"Point",
+         "coordinates":[
+            127.1293735,
+            37.4114423
+         ]
+      }
+   },
+  "dateCreated": {
+    "type": "DateTime",
+    "value": ""
+  },
+  "dateModified": {
+    "type": "DateTime",
+    "value": ""
+  }
+}

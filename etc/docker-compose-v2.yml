@@ -1,0 +1,91 @@
+version: '3.3'
+  
+services:
+  zookeeper:
+    build:
+      context: .
+      dockerfile: Dockerfile-zk
+    image: pinecni/zookeeper:v1
+    hostname: zookeeper
+    container_name: zookeeper
+    tty: true
+    environment:
+      - $D_HOME=~/docker/cityhub
+    ports:
+      - 12181:12181
+    volumes:
+      - $D_HOME/zk/conf:/opt/zk/conf
+      - $D_HOME/logs/zk:/opt/zk/logs 
+      - $D_HOME/logs/zk:/tmp/zookeeper
+
+  kafka:
+    build:
+      context: .
+      dockerfile: Dockerfile-kafka
+    image: pinecni/kafka:v1
+    hostname: kafka
+    container_name: kafka
+    tty: true
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper:zookeeper
+    depends_on:
+      - zookeeper
+    environment:
+      - $D_HOME=~/docker/cityhub
+    volumes:
+      - $D_HOME/kafka/config:/opt/kafka/config
+      - $D_HOME/logs/kafka:/opt/kafka/logs
+      - $D_HOME/logs/kafka-logs:/tmp/kafka-logs
+
+  storm:
+    build:
+      context: .
+      dockerfile: Dockerfile-storm
+    image: pinecni/storm:v1
+    hostname: storm
+    container_name: storm
+    tty: true
+    ports:
+      - 18080:18080
+      - 6700:6700
+      - 6701:6701
+      - 6702:6702
+      - 6703:6703
+    links:
+      - zookeeper:zookeeper
+      - kafka
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      - $D_HOME=~/docker/cityhub
+    volumes:
+      - $D_HOME/storm/conf:/opt/storm/conf
+      - $D_HOME/logs/storm:/opt/storm/logs
+
+
+  flume:
+    build:
+      context: .
+      dockerfile: Dockerfile-flume
+    image: pinecni/flume:v1
+    hostname: flume
+    container_name: flume
+    tty: true
+    ports:
+      - 1883:1883
+    links:
+      - zookeeper:zookeeper
+      - kafka:kafka
+    depends_on:
+      - zookeeper
+      - kafka
+    environment:
+      - $D_HOME=~/docker/cityhub
+    volumes:
+      - $D_HOME/flume/conf:/opt/flume/conf
+      - $D_HOME/flume/plugins.d:/opt/flume/plugins.d
+      - $D_HOME/logs/flume:/opt/flume/logs 
+
