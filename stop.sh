@@ -1,4 +1,6 @@
 #!/bin/sh
 docker-compose down
 
-rm -rf logs/*
+sudo mv -rf ./logs ./logs_$(date +%Y%m%d%H%M)
+mkdir logs
+
