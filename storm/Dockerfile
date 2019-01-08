@@ -3,7 +3,7 @@ MAINTAINER Yonghak An <neoshaby@gmail.com>
 
 # The used storm version can also be supplied like this with the build command like this:
 ARG MIRROR=http://mirror.apache-kr.org/storm
-ARG VERSION=1.0.6
+ARG VERSION=1.2.2
 ARG BIN_VERSION=apache-storm-${VERSION}
 
 LABEL name=${BIN_VERSION} version=${VERSION}
