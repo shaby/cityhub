@@ -67,6 +67,7 @@ services:
       context: .
       dockerfile: ./storm/Dockerfile
     image: pinecni/storm:v1
+    hostname: nimbus
     container_name: nimbus
     command: nimbus -c nimbus.host=nimbus 
     restart: always
@@ -139,12 +140,13 @@ services:
       context: .
       dockerfile: ./storm/Dockerfile
     image: pinecni/storm:v1
-    command: -c nimbus.host=nimbus jar /maven/topology-0.1.jar com.pinecni.cityhub.topology.CityHubTopology /maven/topology.conf remote
+    command: -c nimbus.host=nimbus jar /maven/topology-0.1.jar com.pinecni.cityhub.topology.CityHubTopology /maven/topology.conf
     environment:
       - WAIT_FOR_HOST=nimbus
       - WAIT_FOR_PORT=6627
     volumes:
-      - ${CITYHUB}/topo:/maven
+      - ${CITYHUB}/storm/topology-0.1.jar:/maven/topology-0.1.jar
+      - ${CITYHUB}/storm/topology.conf:/maven/topology.conf
     depends_on:
       - nimbus
 

@@ -18,8 +18,9 @@ RUN apk add --no-cache bash wget tzdata \
   && tar -zxvf ${BIN_VERSION}-bin.tar.gz -C /opt/flume --strip 1 \
   && rm -rf ${BIN_VERSION}-bin.tar.gz \
   && rm -rf /opt/flume/lib/httpclient-4.2.1.jar \
-  && rm -rf /opt/flume/lib/httpcore-4.4.1.jar
-
+  && rm -rf /opt/flume/lib/httpcore-4.4.1.jar \
+  && rm -rf /opt/flume/lib/kafka_2.10-0.9.0.1.jar \
+  && rm -rf /opt/flume/lib/kafka-clients-0.9.0.1.jar
 
 ADD ./flume/InstallCert.java /InstallCert.java
 
