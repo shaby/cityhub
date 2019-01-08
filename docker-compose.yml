@@ -14,6 +14,7 @@ services:
       - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
       - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
       - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+
   zk2:
     build:
       context: .
@@ -26,6 +27,9 @@ services:
       - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
       - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
       - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+    depends_on:
+      - zk1
+
   zk3:
     build:
       context: .
@@ -38,6 +42,8 @@ services:
       - ADDITIONAL_ZOOKEEPER_1=server.1=zk1:2888:3888
       - ADDITIONAL_ZOOKEEPER_2=server.2=zk2:2888:3888
       - ADDITIONAL_ZOOKEEPER_3=server.3=zk3:2888:3888
+    depends_on:
+      - zk2
 
   kafka:
     build:
@@ -126,14 +132,14 @@ services:
       - AGENT_NAME=agent
       - AGENT_FILE=/opt/flume/conf/agent.conf
       - AGENT_CONF=/opt/flume/conf
-      - WAIT_FOR_HOST=nimbus
-      - WAIT_FOR_PORT=6627
+      - WAIT_FOR_HOST=kafka
+      - WAIT_FOR_PORT=9092
     volumes:
       - ${CITYHUB}/flume/lib:/opt/flume/plugins.d/agent/lib
       - ${CITYHUB}/flume/conf/agent.conf:/opt/flume/conf/agent.conf
       - ${CITYHUB}/logs/flume:/opt/flume/logs
     depends_on:
-      - nimbus
+      - kafka
 
   topology:
     build:
