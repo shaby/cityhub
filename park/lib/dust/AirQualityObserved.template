@@ -1,13 +1,13 @@
 {
-   "id":"8800000000000000000",
-   "type":"WeatherObserved",
+   "id":"",
+   "type":"AirQualityObserved",
    "location":{
       "type":"geo:json",
       "value":{
          "type":"Point",
          "coordinates":[
-            127.1293735,
-            37.4114423
+            127.1311667,
+            37.45719444
          ]
       }
    },
@@ -17,35 +17,40 @@
          "addressCountry":"KR",
          "addressLocality":"야탑동",
          "addressRegion":"성남시"
+
       }
    },
-   "temperature":{
-      "type":"float",
-      "value":""
-   },
-   "windSpeed":{
-      "type":"float",
-      "value":""
-   },
-   "humidity":{
+   "so2":{
       "type":"integer",
       "value":""
    },
-   "rainfall":{
-      "type":"float",
-      "value":""
-   },
-   "hourlyRainfall":{
-      "type":"float",
-      "value":""
-   },
-   "visibilityValue":{
+   "co":{
       "type":"integer",
       "value":""
    },
-   "weatherType":{
+   "o3":{
       "type":"integer",
       "value":""
+   },
+   "no2":{
+      "type":"integer",
+      "value":""
+   },
+   "pm10":{
+      "type":"integer",
+      "value":""
+   },
+   "pm25":{
+      "type":"integer",
+      "value":""
+   },
+   "airQualityLevel":{
+      "type":"integer",
+      "value":""
+   },
+   "airQualityIndexRef":{
+      "type":"string",
+      "value":"https://www.airkorea.or.kr/khaiInfo"
    },
    "dataObserved":{
       "type":"DateTime",
@@ -53,16 +58,10 @@
    },
    "locationTag":{
       "type":"string",
-      "value":[
-         "주거지역"
-      ]
+      "value":""
    },
    "dateCreated":{
       "type":"DateTime",
       "value":""
-   },
-  "dateModified": {
-    "type": "DateTime",
-    "value": ""
-  }
+   }
 }

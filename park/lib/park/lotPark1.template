@@ -1,0 +1,81 @@
+{
+  "id": "",
+  "type": "OffStreetParking",
+  "name": {
+    "type": "string",
+    "value": ""
+  },
+  "availableSpotNumber": {
+    "type": "integer",
+    "value": ""
+  },
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "type": "Point",
+      "coordinates": [127.1293735, 37.4114423]
+    }
+  },
+  "totalSpotNumber": {
+    "type": "integer",
+    "value": "110"
+  },
+  "address": {
+    "type": "PostalAddress",
+    "value": {
+      "addressCountry": "KR",
+      "addressLocality": "야탑동",
+      "addressRegion": "성남시"
+    }
+  },
+  "category": {
+    "type": "string",
+    "value": ["public"]
+  },
+  "congestionPrediction": {
+    "type": "string",
+    "value": []
+  },
+  "paymentType": {
+    "type": "string",
+    "value": ["creditcard"]
+  },
+  "priceRate": {
+    "type": "PriceRateType",
+    "value": "30-400,10-200"
+  },
+  "priceCurrency": {
+    "type": "string",
+    "value": "KRW"
+  },
+  "image": {
+    "type": "string",
+    "value": "https://raw.githubusercontent.com/IoTKETI/image/master/City_hub_yt_lot_1.jpg"
+  },
+  "openingHours": {
+    "type": "OpeningHours",
+    "value": ["Mo-Su00:00-24:00"]
+  },
+  "contactPoint": {
+    "type": "contactPointType",
+    "value": {
+      "telephone": ["031-701-2952"]
+    }
+  },
+  "locationTag": {
+    "type": "string",
+    "value": ["상업지역"]
+  },
+  "parkingLotURI": {
+    "type": "string",
+    "value": "http://182.252.135.132:1026/v2/entities/"
+  },
+  "dateCreated": {
+    "type": "DateTime",
+    "value": ""
+  },
+  "dateModified": {
+    "type": "DateTime",
+    "value": ""
+  }
+}

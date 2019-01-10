@@ -1,0 +1,59 @@
+{
+  "id": "",
+  "type": "ParkingSpot",
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "type": "Point",
+      "coordinates": [127.127856, 37.4113719]
+    }
+  },
+  "address": {
+    "type": "PostalAddess",
+    "value": {
+      "addressCountry": "KR",
+      "addressLocality": "야탑동",
+      "addressRegion": "성남시"
+    }
+  },
+  "name": {
+    "type": "string",
+    "value": ""
+  },
+  "parkingLotType": {
+    "type": "string",
+    "value": "OffStreetParking"
+  },
+  "width": {
+    "type": "float",
+    "value": "2.5"
+  },
+  "length": {
+    "type": "float",
+    "value": "5.1"
+  },
+  "refParkingLot": {
+    "type": "string",
+    "value": "http://182.252.135.132:1026/v2/entities/"
+  },
+  "status": {
+    "type": "string",
+    "value": ""
+  },
+  "userTypeLimit": {
+    "type": "string",
+    "value": "disabled"
+  },
+  "locationTag": {
+    "type": "string",
+    "value": ["상업지역"]
+  },
+  "dateCreated": {
+    "type": "DateTime",
+    "value": ""
+  },
+  "dateModified": {
+    "type": "DateTime",
+    "value": ""
+  }
+}

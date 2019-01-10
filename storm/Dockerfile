@@ -20,7 +20,7 @@ RUN \
   && wget -q ${MIRROR}/${BIN_VERSION}/${BIN_VERSION}.tar.gz \
   && tar -zxvf ${BIN_VERSION}.tar.gz -C /opt/storm --strip 1 \
   && rm ${BIN_VERSION}.tar.gz \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
 ENV LC_ALL ko_KR.UTF-8
 
@@ -35,9 +35,9 @@ EXPOSE 6627 3772 3773
 
 
 # add startup script
-ADD ./storm/extlib /opt/storm/extlib
 ADD ./storm/cluster.xml log4j2/cluster.xml
 ADD ./storm/worker.xml log4j2/worker.xml
+ADD ./storm/extlib /opt/storm/extlib
 ADD ./storm/entrypoint.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 

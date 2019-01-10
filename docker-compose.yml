@@ -59,13 +59,11 @@ services:
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - KAFKA_BROKER_ID=1
       - ZOOKEEPER_CONNECTION_STRING=zk1:2181,zk2:2181,zk3:2181
-      - WAIT_FOR_HOST=zk1
+      - WAIT_FOR_HOST=zk3
       - WAIT_FOR_PORT=2181
     volumes:
       - ${CITYHUB}/logs/kafka-logs:/data
     depends_on:
-      - zk1
-      - zk2
       - zk3
 
   nimbus:
@@ -79,13 +77,16 @@ services:
     restart: always
     environment:
       - STORM_ZOOKEEPER_SERVERS=zk1,zk2,zk3
-      - WAIT_FOR_HOST=zk1
+      - WAIT_FOR_HOST=zk3
       - WAIT_FOR_PORT=2181
     ports:
       - 6627:6627
+    volumes:
+      - ${CITYHUB}/storm/extlib:/opt/storm/extlib
     depends_on:
       - kafka
-      
+
+
   supervisor:
     build:
       context: .
@@ -101,6 +102,7 @@ services:
       - WAIT_FOR_PORT=6627
     volumes:
       - ${CITYHUB}/logs/storm:/opt/storm/logs
+      - ${CITYHUB}/storm/extlib:/opt/storm/extlib
     depends_on:
       - nimbus
 
@@ -118,16 +120,18 @@ services:
       - WAIT_FOR_PORT=6627
     ports:
       - 18080:8080
+    volumes:
+      - ${CITYHUB}/storm/extlib:/opt/storm/extlib
     depends_on:
       - nimbus
 
-  flume:
+  flume-agent:
     build:
       context: .
       dockerfile: ./flume/Dockerfile
     image: pinecni/flume:v1
-    hostname: flume
-    container_name: flume
+    hostname: flume-agent
+    container_name: flume-agent
     environment:
       - AGENT_NAME=agent
       - AGENT_FILE=/opt/flume/conf/agent.conf
@@ -136,12 +140,15 @@ services:
       - WAIT_FOR_PORT=9092
     volumes:
       - ${CITYHUB}/flume/lib:/opt/flume/plugins.d/agent/lib
+      - ${CITYHUB}/flume/libext:/opt/flume/plugins.d/agent/libext
+      - ${CITYHUB}/flume/conf/log4j.properties:/opt/flume/conf/log4j.properties
       - ${CITYHUB}/flume/conf/agent.conf:/opt/flume/conf/agent.conf
       - ${CITYHUB}/logs/flume:/opt/flume/logs
     depends_on:
       - kafka
 
-  topology:
+
+  topo-cityhub:
     build:
       context: .
       dockerfile: ./storm/Dockerfile
@@ -162,4 +169,3 @@ networks:
   default:
     external: 
       name: cityhub
-

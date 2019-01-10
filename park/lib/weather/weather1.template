@@ -60,9 +60,5 @@
    "dateCreated":{
       "type":"DateTime",
       "value":""
-   },
-  "dateModified": {
-    "type": "DateTime",
-    "value": ""
-  }
+   }
 }

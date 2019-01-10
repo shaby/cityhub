@@ -61,7 +61,7 @@
       "type":"DateTime",
       "value":""
    },
-  "dateModified": {
+   "dateModified": {
     "type": "DateTime",
     "value": ""
   }

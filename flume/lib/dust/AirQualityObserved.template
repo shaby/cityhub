@@ -1,13 +1,25 @@
 {
-   "id":"",
+   "id":"8800000000000000000",
    "type":"AirQualityObserved",
+   "dataObserved":{
+      "type":"DateTime",
+      "value":"2018-11-15T20:00:00"
+   },
+   "dateCreated":{
+      "type":"DateTime",
+      "value":"2018-11-15T20:10:00"
+   },
+   "dateModified": {
+    "type": "DateTime",
+    "value": ""
+   },
    "location":{
       "type":"geo:json",
       "value":{
          "type":"Point",
          "coordinates":[
-            127.1311667,
-            37.45719444
+            127.1293735,
+            37.4114423
          ]
       }
    },
@@ -21,47 +33,39 @@
       }
    },
    "so2":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"0.005"
    },
    "co":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"0.8"
    },
    "o3":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"0.028"
    },
    "no2":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"0.077"
    },
    "pm10":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"53"
    },
    "pm25":{
-      "type":"integer",
-      "value":""
+      "type":"float",
+      "value":"42"
    },
    "airQualityLevel":{
       "type":"integer",
-      "value":""
+      "value":"2"
    },
    "airQualityIndexRef":{
       "type":"string",
       "value":"https://www.airkorea.or.kr/khaiInfo"
    },
-   "dataObserved":{
-      "type":"DateTime",
-      "value":""
-   },
    "locationTag":{
       "type":"string",
-      "value":""
-   },
-   "dateCreated":{
-      "type":"DateTime",
-      "value":""
+      "value":"주거지역"
    }
 }
