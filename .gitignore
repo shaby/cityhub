@@ -1,2 +1,6 @@
 logs/**
 logs_*/**
+/bin/
+*.project
+*.classpath
+*.launch

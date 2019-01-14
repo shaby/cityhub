@@ -1,44 +1,58 @@
 {
    "id":"8800000000000000000",
    "type":"AirQualityForecast",
+   "dataObserved":{
+      "type":"DateTime",
+      "value":"2018-11-15T20:00:00"
+   },
+   "dateCreated":{
+      "type":"DateTime",
+      "value":"2018-11-15T20:10:00"
+   },
+   "dateModified": {
+    "type": "DateTime",
+    "value": ""
+   },
    "location":{
       "type":"geo:json",
       "value":{
          "type":"Point",
          "coordinates":[
-            127.1311667,
-            37.45719444
+            127.1293735,
+            37.4114423
          ]
       }
+   },
+   "locationTag":{
+      "type":"string",
+      "value":"주거지역"
    },
    "address":{
       "type":"PostalAddress",
       "value":{
          "addressCountry":"KR",
-         "addressLocality":"야탑동",
-         "addressRegion":"성남시"
+         "addressRegion":"경기도"
       }
    },
-   "airQualityLevel":{
-      "type":"integer",
-      "value":""
+   "airQualityForecast":{
+      "type":"forecastType",
+      "value":[
+         {
+            "airQualityLevel":"2",
+            "timeForecast":"2018-11-08T05:00:00"
+         },
+         {
+            "airQualityLevel":"2",
+            "timeForecast":"2018-11-08T06:00:00"
+         },
+         {
+            "airQualityLevel":"2",
+            "timeForecast":"2018-11-08T07:00:00"
+         }
+      ]
    },
    "airQualityIndexRef":{
       "type":"string",
       "value":"https://www.airkorea.or.kr/khaiInfo"
-   },
-   "dataForecast":{
-      "type":"DateTime",
-      "value":""
-   },
-   "locationTag":{
-      "type":"string",
-      "value":[
-         "자연녹지지역"
-      ]
-   },
-   "dateCreated":{
-      "type":"DateTime",
-      "value":""
    }
 }

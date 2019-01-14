@@ -2,8 +2,9 @@ FROM openjdk:8-alpine
 MAINTAINER Yonghak An <neoshaby@gmail.com>
 
 ARG MIRROR=http://mirror.navercorp.com/apache/flume
-ARG VERSION=1.8.0
+ARG VERSION=1.9.0
 ARG BIN_VERSION=apache-flume-${VERSION}
+ARG GLIBC_VERSION=2.28-r0
 
 LABEL name=${BIN_VERSION} version=${VERSION}
 
@@ -17,10 +18,9 @@ RUN apk add --no-cache bash wget tzdata \
   && wget -q ${MIRROR}/${VERSION}/${BIN_VERSION}-bin.tar.gz \
   && tar -zxvf ${BIN_VERSION}-bin.tar.gz -C /opt/flume --strip 1 \
   && rm -rf ${BIN_VERSION}-bin.tar.gz \
-  && rm -rf /opt/flume/lib/httpclient-4.2.1.jar \
-  && rm -rf /opt/flume/lib/httpcore-4.4.1.jar \
-  && rm -rf /opt/flume/lib/kafka_2.10-0.9.0.1.jar \
-  && rm -rf /opt/flume/lib/kafka-clients-0.9.0.1.jar
+  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+  && apk add --no-cache --allow-untrusted glibc-${GLIBC_VERSION}.apk \
+  && rm glibc-${GLIBC_VERSION}.apk
 
 ADD ./flume/InstallCert.java /InstallCert.java
 
@@ -32,8 +32,6 @@ RUN javac InstallCert.java \
 WORKDIR /opt/flume
 
 
-ADD ./flume/libext /opt/flume/plugins.d/park/libext
-ADD ./flume/conf/log4j.properties /opt/flume/conf/log4j.properties
 ADD ./flume/entrypoint.sh /opt/start.sh
 RUN chmod +x /opt/start.sh
 
