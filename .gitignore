@@ -4,3 +4,4 @@ logs_*/**
 *.project
 *.classpath
 *.launch
+*.prefs
