@@ -143,6 +143,7 @@ services:
       - ${CITYHUB}/flume/libext:/opt/flume/plugins.d/agent/libext
       - ${CITYHUB}/flume/conf/log4j.properties:/opt/flume/conf/log4j.properties
       - ${CITYHUB}/flume/conf/agent.conf:/opt/flume/conf/agent.conf
+      - ${CITYHUB}/flume/conf/flume-env.sh:/opt/flume/conf/flume-env.sh
       - ${CITYHUB}/logs/flume:/opt/flume/logs
     depends_on:
       - kafka
