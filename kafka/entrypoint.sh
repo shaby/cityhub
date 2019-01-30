@@ -12,13 +12,13 @@ cat /opt/kafka/config/server.properties.template | sed \
   -e "s|{{ZOOKEEPER_CONNECTION_STRING}}|${ZOOKEEPER_CONNECTION_STRING}|g" \
    > /opt/kafka/config/server.properties
 
-
-while ! nc -z $WAIT_FOR_HOST $WAIT_FOR_PORT; do
-  >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT - sleeping"
-  sleep 1
-done
->&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT is up - Starting kafka"
-
+if ! [ -z "$WAIT_FOR_HOST" ]; then
+  while ! nc -z $WAIT_FOR_HOST $WAIT_FOR_PORT; do
+    >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT - sleeping"
+    sleep 1
+  done
+  >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT is up - Starting kafka"
+fi
 
 
 exec bin/kafka-server-start.sh /opt/kafka/config/server.properties

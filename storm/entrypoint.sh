@@ -66,12 +66,14 @@ do
     fi
 done
 
+if ! [ -z "$WAIT_FOR_HOST" ]; then
+  while ! nc -z $WAIT_FOR_HOST $WAIT_FOR_PORT; do
+    >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT - sleeping"
+    sleep 1
+  done
+  >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT is up - Starting Nimbus"
+fi
 
-while ! nc -z $WAIT_FOR_HOST $WAIT_FOR_PORT; do
-  >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT - sleeping"
-  sleep 1
-done
->&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT is up - Starting Nimbus"
 
 CMD="exec bin/storm $@$NIMBUS_SEEDS$SUPERVISOR_SLOTS$HOST$ZOOKEEPER_SERVERS_ESCAPED"
 
