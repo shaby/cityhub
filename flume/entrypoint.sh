@@ -8,5 +8,4 @@ if ! [ -z "$WAIT_FOR_HOST" ]; then
   >&2 echo "$WAIT_FOR_HOST $WAIT_FOR_PORT is up - Starting flume"
 fi
 
-exec /opt/flume/bin/flume-ng agent --name ${AGENT_NAME} --conf-file ${AGENT_FILE} --conf ${AGENT_CONF} -Dflume.root.logger=INFO,DAILY
-
+exec /opt/flume/bin/flume-ng agent --name ${AGENT_NAME} --conf-file ${AGENT_FILE} --conf ${AGENT_CONF}
