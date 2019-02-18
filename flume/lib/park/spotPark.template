@@ -55,5 +55,6 @@
   "dateModified": {
     "type": "DateTime",
     "value": ""
-  }
+  },
+  "isSave": false
 }
