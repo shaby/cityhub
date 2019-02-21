@@ -15,6 +15,7 @@
     </environment>
   </environments>
   <mappers>
-    <mapper url="file://${path}mapper/Mapper.xml"/>
+    <mapper url="file://${path}mapper/Mapper-postgresql.xml"/>
+    <mapper url="file://${path}mapper/Mapper-mysql.xml"/>
   </mappers>
 </configuration>
