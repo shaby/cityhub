@@ -1,6 +1,7 @@
 # cityhub
 
 1st step
+
 chmod +x *.sh
 
 initNetwork.sh 를 실행해서 네트웍 브릿지를 만듭니다.
